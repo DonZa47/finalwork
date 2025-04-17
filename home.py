@@ -7,7 +7,7 @@ from sklearn.metrics import mean_squared_error, r2_score
 import matplotlib.pyplot as plt
 
 # ---------- STEP 1: โหลดข้อมูล ----------
-df = pd.read_csv('cirrhosis.csv')  # แก้ชื่อไฟล์ตรงนี้
+df = pd.read_csv('./cirrhosis/cirrhosis.csv')  # แก้ชื่อไฟล์ตรงนี้
 print("ข้อมูลตัวอย่าง:")
 print(df.head())
 
