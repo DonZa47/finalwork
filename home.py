@@ -1,118 +1,96 @@
+from sklearn.neighbors import KNeighborsClassifier
 import streamlit as st
 import pandas as pd
 import numpy as np
-import os
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
+import matplotlib.pyplot as plt
 
-st.set_page_config(page_title="ระบบพยากรณ์โรคตับ", layout="wide")
+st.title("การพยากรณ์โรคตับต่างๆ")
+st.header("👨🏽‍⚕️👨🏽‍⚕️ด้วยเทคนิคเหมืองแร่ข้อมูล👨🏽‍⚕️👨🏽‍⚕️")
 
-st.title("📌 ระบบพยากรณ์โรคตับด้วย KNN")
-st.header("👨🏽‍⚕️ วิเคราะห์ข้อมูลโรคตับ (Cirrhosis)")
+st.image('Liver_disease01.jpg')
 
-# ✅ โหลดภาพหลัก
-if os.path.exists('Liver_disease01.jpg'):
-    st.image('Liver_disease01.jpg', caption="ข้อมูลโรคตับ")
-else:
-    st.warning("⚠️ ไม่พบภาพ Liver_disease01.jpg")
+c1,c2,c3=st.columns(3)
+with c1:
+    st.write('Liver_disease02.jpg')
+with c2:
+    st.write('Liver_disease03.jpg')
+with c3:
+    st.write('Liver_disease04.jpg')
 
-# ✅ โหลดข้อมูล
-csv_path = 'cirrhosis.csv'
-if os.path.exists(csv_path):
-    df = pd.read_csv(csv_path)
+dt= pd.read_csv('./cirrhosis.csv')
 
-    st.subheader("🧬 ข้อมูลตัวอย่าง")
-    st.write(df.head(10))
+st.header("ข้อมูลโรคตับ")
+st.write(dt.head(10))
 
-    # ✅ ตรวจสอบค่าที่หายไป
-    df = df.dropna()
+count_male = dt.groupby('Sex').size()[1]
+count_female = dt.groupby('Sex').size()[0]
+dx = [count_male, count_female]
+dx2 = pd.DataFrame(dx, index=["Male", "Female"])
+st.bar_chart(dx2)
+
+st.subheader("สถิติข้อมูลโรคหัวใจ")
+st.write(dt.describe())
+st.write("สถิติจำนวนเพศหญิง=0 เพสชาย=1")
+st.write(dt.groupby('Sex')['Sex'].count())
+count_male = dt.groupby('Sex').size()[0]
+dx = [count_male, count_female]
+dx2 =pd.DataFrame(dx, index=["Male","Female"])
+st.bar_chart(dx2)
+
+st.subheader("ข้อมูลแยกตามเพศ")
+count_male = dt.groupby('Sex').size()[1]
+count_female = dt.groupby('Sex').size()[0]
+dx = [count_male, count_female]
+dx2 = pd.DataFrame(dx, index=["male", "Female"])
+st.bar_chart(dx2)
+
+st.subheader("ข้อมุลค่าเฉลี่ยอายุแยกตามเพศ")
+average_male_age = dt[dt['Sex'] == 1]['Age'].mean()
+average_female_age = dt[dt['Sex'] == 0]['Age'].mean()
+dxavg = [average_male_age, average_female_age]
+dxavg2 = pd.DataFrame(dxavg, index=["male", "Female"])
+st.bar_chart(dxavg2)
+
+html_8 = """
+<div style="background-color:#6BD5DA;padding:15px;border-radius:15px 15px 15px 15px;border-style:'solid';border-color:black">
+<center><h5>ทำนายข้อมูล</h5></center>
+</div>
+"""
+st.markdown(html_8, unsafe_allow_html=True)
+st.markdown("")
+
+A1 = st.number_input("กรุณาเลือกข้อมูลอายุ")
+A2 = st.number_input("กรุณาเลือกข้อมุลเพศชาย=1 เพศหญิง=0")
+A3 = st.number_input("กรุณาเลือกข้อมูล3")
+A4 = st.number_input("กรุณาเลือกข้อมูล4")
+A5 = st.number_input("กรุณาเลือกข้อมูล5")
+A6 = st.number_input("กรุณาเลือกข้อมูล6")
+A7 = st.number_input("กรุณาเลือกข้อมูล7")
+A8 = st.number_input("กรุณาเลือกข้อมูล8")
+A9 = st.number_input("กรุณาเลือกข้อมูล9")
+A10 = st.number_input("กรุณาเลือกข้อมูล10")
+A11 = st.number_input("กรุณาเลือกข้อมูล11")
+
+sp_len = st.number_input("กรุณาเลือกข้อมูล sepal.length")
+sp_wd = st.number_input("กรุณาเลือกข้อมูล sepal.width")
+
+if st.button("ทำนายผล"):
+    #st.write("ทำนาย")
+   dt = pd.read_csv("./data/heart2.csv") 
+   X = dt.drop('HeartDisease', axis=1)
+   y = dt.HeartDisease   
+
+   Knn_model = KNeighborsClassifier(n_neighbors=3)
+   Knn_model.fit(X, y)  
     
-    # ✅ แปลง Sex เป็นตัวเลขหากจำเป็น
-    if df['Sex'].dtype == 'object':
-        df['Sex'] = df['Sex'].map({'M': 1, 'F': 0})
-    
-    # ✅ สถิติเพศ
-    st.subheader("📊 สถิติเพศ")
-    sex_counts = df['Sex'].value_counts()
-    st.bar_chart(sex_counts)
+   x_input = np.array([[A1,A2,A3,A4,A5,A6,A7,A8,A9,A10,A11]])
+   st.write(Knn_model.predict(x_input))
+   
+   out=Knn_model.predict(x_input)
 
-    # ✅ อายุเฉลี่ยตามเพศ
-    st.subheader("📈 อายุเฉลี่ยตามเพศ")
-    avg_age = df.groupby('Sex')['Age'].mean()
-    st.bar_chart(avg_age)
-
-    # ✅ ฟอร์มกรอกข้อมูลทำนาย
-    st.subheader("🔮 ป้อนข้อมูลเพื่อตรวจความเสี่ยงโรคตับ")
-
-    # ✅ ตัวอย่างใช้ฟีเจอร์ 5 ตัว
-    A1 = st.number_input("อายุ (Age)", 1, 100, 45)
-    A2 = st.selectbox("เพศ", options=[0, 1], format_func=lambda x: "หญิง" if x == 0 else "ชาย")
-    A3 = st.number_input("Bilirubin", 0.0, 30.0, 1.2)
-    A4 = st.number_input("Albumin", 0.0, 10.0, 3.5)
-    A5 = st.number_input("INR", 0.0, 10.0, 1.0)
-
-    if st.button("✅ ทำนายผล"):
-        try:
-            X = df[['Age', 'Sex', 'Bilirubin', 'Albumin', 'INR']]
-            y = df['Stage']  # ใช้ 'Stage' เป็น target
-
-            # ✅ เตรียมโมเดล
-            scaler = StandardScaler()
-            X_scaled = scaler.fit_transform(X)
-
-            model = KNeighborsClassifier(n_neighbors=3)
-            model.fit(X_scaled, y)
-
-            # ✅ เตรียมข้อมูลผู้ใช้
-            user_input = np.array([[A1, A2, A3, A4, A5]])
-            user_input_scaled = scaler.transform(user_input)
-
-            prediction = model.predict(user_input_scaled)
-            st.success(f"🎯 ผลการทำนาย: อยู่ในระยะที่ {prediction[0]}")
-
-            # ✅ แสดงภาพตามผลลัพธ์
-            if int(prediction[0]) >= 3:
-                if os.path.exists('./img/H2.jpg'):
-                    st.image('./img/H2.jpg', caption="⚠️ ความเสี่ยงสูง")
-                else:
-                    st.warning("ไม่พบภาพ H2.jpg")
-            else:
-                if os.path.exists('./img/H3.jpg'):
-                    st.image('./img/H3.jpg', caption="✅ ความเสี่ยงต่ำ")
-                else:
-                    st.warning("ไม่พบภาพ H3.jpg")
-
-        except Exception as e:
-            st.error(f"❌ เกิดข้อผิดพลาด: {e}")
+   if out[0] == '1':
+    st.image("./img/H2.jpg")
+   else:
+    st.image("./img/H3.jpg")
 else:
-    st.error("❌ ไม่พบไฟล์ข้อมูล cirrhosis.csv กรุณาวางไว้ในโฟลเดอร์เดียวกับไฟล์นี้")
-your_project/
-├── app.py                 ✅ (ไฟล์ Streamlit ที่คุณกำลังรัน)
-├── Liver_disease01.jpg    ✅ (ไฟล์ภาพ)
-├── cirrhosis.csv          ✅ (ไฟล์ข้อมูล)
-├── img/
-│   ├── H2.jpg             ✅ (ภาพแสดงผลทำนาย "เสี่ยง")
-│   └── H3.jpg             ✅ (ภาพแสดงผลทำนาย "ไม่เสี่ยง")
-import os
-st.write("📂 Current working directory:", os.getcwd())
-st.write("📁 Files in current folder:", os.listdir())
-import os
-
-st.subheader("📁 ตรวจสอบไฟล์")
-files = os.listdir()
-st.write("📄 ไฟล์ในโฟลเดอร์ปัจจุบัน:", files)
-
-if not os.path.exists("Liver_disease01.jpg"):
-    st.warning("⚠️ ไม่พบ Liver_disease01.jpg")
-
-if not os.path.exists("cirrhosis.csv"):
-    st.warning("⚠️ ไม่พบ cirrhosis.csv")
-
-if not os.path.exists("img/H2.jpg"):
-    st.warning("⚠️ ไม่พบ img/H2.jpg")
-
-if not os.path.exists("img/H3.jpg"):
-    st.warning("⚠️ ไม่พบ img/H3.jpg")
-streamlit run app.py
-
+    st.write("ไม่ทำนาย")
