@@ -17,18 +17,16 @@ target_column = 'interest_rate'
 X = df.drop("Stage", axis=1)
 y = df.Stage
 
-# แปลงข้อมูล category เป็นตัวเลข (One-Hot Encoding)
-X = pd.get_dummies(X)
 
 # แบ่งข้อมูลเป็น train/test
 X_train, X_test, y_train, y_test = train_test_split(
-    X, y, test_size=0.2, random_state=42
+    X, y, test_size=0.2, random_state=25
 )
 
 # สเกลข้อมูล
-scaler = StandardScaler()
-X_train_scaled = scaler.fit_transform(X_train)
-X_test_scaled = scaler.transform(X_test)
+##scaler = StandardScaler()
+#X_train_scaled = scaler.fit_transform(X_train)
+#X_test_scaled = scaler.transform(X_test)
 
 # ---------- STEP 3: หาค่า K ที่ดีที่สุด ----------
 k_range = range(1, 31)
