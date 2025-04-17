@@ -11,13 +11,13 @@ st.image('./img/Liver disease01.jpg')
 
 c1,c2,c3=st.columns(3)
 with c1:
-    st.write('./img/Liver disease02.jpg')
+    st.image('./img/Liver disease02.jpg')
 with c2:
-    st.write('./img/Liver disease03.jpg')
+    st.image('./img/Liver disease03.jpg')
 with c3:
-    st.write('./img/Liver disease04.jpg')
+    st.image('./img/Liver disease04.jpg')
 
-dt= pd.read_csv('./data/cirrhosis.csv')
+dt = pd.read_csv('./data/cirrhosis.csv')
 
 st.header("ข้อมูลโรคตับ")
 st.write(dt.head(5))
@@ -30,11 +30,11 @@ st.bar_chart(dx2)
 
 st.subheader("สถิติข้อมูลโรคตับ")
 st.write(dt.describe())
-st.write("สถิติจำนวนเพศหญิง=0 เพสชาย=1")
+st.write("สถิติจำนวนเพศหญิง=0 เพศชาย=1")
 st.write(dt.groupby('Sex')['Sex'].count())
 count_male = dt.groupby('Sex').size()[0]
 dx = [count_male, count_female]
-dx2 =pd.DataFrame(dx, index=["Male","Female"])
+dx2 = pd.DataFrame(dx, index=["Male","Female"])
 st.bar_chart(dx2)
 
 st.subheader("ข้อมูลแยกตามเพศ")
@@ -59,6 +59,7 @@ html_8 = """
 st.markdown(html_8, unsafe_allow_html=True)
 st.markdown("")
 
+# รับค่าจากผู้ใช้
 A1 = st.number_input("กรุณาเลือกข้อมูลอายุ")
 A2 = st.number_input("กรุณาเลือกข้อมุลเพศชาย=1 เพศหญิง=0")
 A3 = st.number_input("กรุณาเลือกข้อมูล3")
@@ -79,22 +80,34 @@ A17 = st.number_input("กรุณาเลือกข้อมูล17")
 A18 = st.number_input("กรุณาเลือกข้อมูล18")
 
 if st.button("ทำนายผล"):
-    #st.write("ทำนาย")
-   dt = pd.read_csv("./data/cirrhosis.csv") 
-   X = dt.drop('Stage', axis=1)
-   y = dt.Stage  
+    dt = pd.read_csv("./data/cirrhosis.csv") 
 
-   Knn_model = KNeighborsClassifier(n_neighbors=3)
-   Knn_model.fit(X,y)  
-    
-   x_input = np.array([[A1,A2,A3,A4,A5,A6,A7,A8,A9,A10,A11,A12,A13,A14,A15,A16,A17,A18]])
-   st.write(Knn_model.predict(x_input))
-   
-   out=Knn_model.predict(x_input)
+    # ลบแถวที่มี NaN
+    dt = dt.dropna()
 
-   if out[0] == '1':
-    st.image("'./img/Liver disease02.jpg'")
-   else:
-    st.image("'./img/Liver disease04.jpg'")
+    # แปลงข้อมูล object เป็นตัวเลข
+    for col in dt.columns:
+        if dt[col].dtype == 'object':
+            dt[col] = pd.factorize(dt[col])[0]
+
+    X = dt.drop('Stage', axis=1)
+    y = dt['Stage']
+
+    # ตรวจสอบว่าจำนวน column ตรงกับ input หรือไม่
+    if X.shape[1] != 18:
+        st.error(f"จำนวนคุณลักษณะไม่ตรงกัน: ต้องการ 18 แต่มี {X.shape[1]}")
+    else:
+        Knn_model = KNeighborsClassifier(n_neighbors=3)
+        Knn_model.fit(X, y)
+
+        x_input = np.array([[A1,A2,A3,A4,A5,A6,A7,A8,A9,A10,A11,A12,A13,A14,A15,A16,A17,A18]])
+        out = Knn_model.predict(x_input)
+
+        st.write("ผลการทำนาย Stage:", out[0])
+
+        if out[0] == 1:
+            st.image("./img/Liver disease02.jpg")
+        else:
+            st.image("./img/Liver disease04.jpg")
 else:
     st.write("ไม่ทำนาย")
