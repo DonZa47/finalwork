@@ -87,4 +87,32 @@ if os.path.exists(csv_path):
             st.error(f"❌ เกิดข้อผิดพลาด: {e}")
 else:
     st.error("❌ ไม่พบไฟล์ข้อมูล cirrhosis.csv กรุณาวางไว้ในโฟลเดอร์เดียวกับไฟล์นี้")
+your_project/
+├── app.py                 ✅ (ไฟล์ Streamlit ที่คุณกำลังรัน)
+├── Liver_disease01.jpg    ✅ (ไฟล์ภาพ)
+├── cirrhosis.csv          ✅ (ไฟล์ข้อมูล)
+├── img/
+│   ├── H2.jpg             ✅ (ภาพแสดงผลทำนาย "เสี่ยง")
+│   └── H3.jpg             ✅ (ภาพแสดงผลทำนาย "ไม่เสี่ยง")
+import os
+st.write("📂 Current working directory:", os.getcwd())
+st.write("📁 Files in current folder:", os.listdir())
+import os
+
+st.subheader("📁 ตรวจสอบไฟล์")
+files = os.listdir()
+st.write("📄 ไฟล์ในโฟลเดอร์ปัจจุบัน:", files)
+
+if not os.path.exists("Liver_disease01.jpg"):
+    st.warning("⚠️ ไม่พบ Liver_disease01.jpg")
+
+if not os.path.exists("cirrhosis.csv"):
+    st.warning("⚠️ ไม่พบ cirrhosis.csv")
+
+if not os.path.exists("img/H2.jpg"):
+    st.warning("⚠️ ไม่พบ img/H2.jpg")
+
+if not os.path.exists("img/H3.jpg"):
+    st.warning("⚠️ ไม่พบ img/H3.jpg")
+streamlit run app.py
 
