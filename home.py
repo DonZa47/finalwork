@@ -78,7 +78,7 @@ A15 = st.number_input("กรุณาเลือกข้อมูล15")
 A16 = st.number_input("กรุณาเลือกข้อมูล16")
 A17 = st.number_input("กรุณาเลือกข้อมูล17")
 A18 = st.number_input("กรุณาเลือกข้อมูล18")
-A19 = st.number_input("กรุณาเลือกข้อมูล19")
+
 
 if st.button("ทำนายผล"):
     dt = pd.read_csv("./data/cirrhosis.csv") 
@@ -101,7 +101,7 @@ if st.button("ทำนายผล"):
         Knn_model = KNeighborsClassifier(n_neighbors=3)
         Knn_model.fit(X, y)
 
-        x_input = np.array([[A1,A2,A3,A4,A5,A6,A7,A8,A9,A10,A11,A12,A13,A14,A15,A16,A17,A18,A19]])
+        x_input = np.array([[A1,A2,A3,A4,A5,A6,A7,A8,A9,A10,A11,A12,A13,A14,A15,A16,A17,A18]])
         out = Knn_model.predict(x_input)
 
         st.write("ผลการทำนาย Stage:", out[0])
