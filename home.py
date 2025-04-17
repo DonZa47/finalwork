@@ -7,15 +7,15 @@ import matplotlib.pyplot as plt
 st.title("การพยากรณ์โรคตับต่างๆ")
 st.header("👨🏽‍⚕️👨🏽‍⚕️ด้วยเทคนิคเหมืองแร่ข้อมูล👨🏽‍⚕️👨🏽‍⚕️")
 
-st.image('.Liver disease01.jpg')
+st.image('Liver_disease01.jpg')
 
 c1,c2,c3=st.columns(3)
 with c1:
-    st.write('./Liver disease02/.jpg')
+    st.write('Liver_disease02.jpg')
 with c2:
-    st.write('./Liver disease03/.jpg')
+    st.write('Liver_disease03.jpg')
 with c3:
-    st.write("'./Liver disease04/.jpg'")
+    st.write('Liver_disease04.jpg')
 
 dt= pd.read_csv('./cirrhosis.csv')
 
