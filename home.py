@@ -60,35 +60,20 @@ st.markdown(html_8, unsafe_allow_html=True)
 st.markdown("")
 
 # รับค่าจากผู้ใช้
-A1 = st.number_input("กรุณาเลือกข้อมูลอายุ")
-A2 = st.number_input("กรุณาเลือกข้อมุลเพศชาย=1 เพศหญิง=0")
-A3 = st.number_input("กรุณาเลือกข้อมูล3")
-A4 = st.number_input("กรุณาเลือกข้อมูล4")
-A5 = st.number_input("กรุณาเลือกข้อมูล5")
-A6 = st.number_input("กรุณาเลือกข้อมูล6")
-A7 = st.number_input("กรุณาเลือกข้อมูล7")
-A8 = st.number_input("กรุณาเลือกข้อมูล8")
-A9 = st.number_input("กรุณาเลือกข้อมูล9")
-A10 = st.number_input("กรุณาเลือกข้อมูล10")
-A11 = st.number_input("กรุณาเลือกข้อมูล11")
-A12 = st.number_input("กรุณาเลือกข้อมูล12")
-A13 = st.number_input("กรุณาเลือกข้อมูล13")
-A14 = st.number_input("กรุณาเลือกข้อมูล14")
-A15 = st.number_input("กรุณาเลือกข้อมูล15")
-A16 = st.number_input("กรุณาเลือกข้อมูล16")
-A17 = st.number_input("กรุณาเลือกข้อมูล17")
-A18 = st.number_input("กรุณาเลือกข้อมูล18")
+inputs = []
+for i in range(1, 19):
+    val = st.number_input(f"กรุณาเลือกข้อมูล{i}")
+    inputs.append(val)
 
 if st.button("ทำนายผล"):
     dt = pd.read_csv("./data/cirrhosis.csv")
-    dt = dt.dropna()  # ลบแถวที่มีค่าว่าง
+    dt = dt.dropna()
 
-    # แปลง object เป็นตัวเลข
     for col in dt.columns:
         if dt[col].dtype == 'object':
             dt[col] = pd.factorize(dt[col])[0]
 
-    # ลบคอลัมน์ที่ไม่ใช่ feature เช่น 'ID'
+    # ลบคอลัมน์ ID หากมี
     if 'ID' in dt.columns:
         X = dt.drop(['Stage', 'ID'], axis=1)
     else:
@@ -96,7 +81,6 @@ if st.button("ทำนายผล"):
 
     y = dt['Stage']
 
-    # ตรวจสอบจำนวนคุณลักษณะ
     st.write("คอลัมน์ที่ใช้ในการทำนาย:", X.columns.tolist())
     if X.shape[1] != 18:
         st.error(f"จำนวนคุณลักษณะไม่ตรงกัน: ต้องการ 18 แต่มี {X.shape[1]}")
@@ -104,15 +88,25 @@ if st.button("ทำนายผล"):
         Knn_model = KNeighborsClassifier(n_neighbors=3)
         Knn_model.fit(X, y)
 
-        x_input = np.array([[A1, A2, A3, A4, A5, A6, A7, A8, A9,
-                             A10, A11, A12, A13, A14, A15, A16, A17, A18]])
+        x_input = np.array([inputs])
         out = Knn_model.predict(x_input)
 
         st.success(f"ผลการทำนาย Stage: {out[0]}")
 
+        # แสดงผลตาม Stage ที่ทำนายได้
         if out[0] == 1:
-            st.image("./img/Liver disease02.jpg")
+            st.image("./img/Liver disease01.jpg", caption="Stage 1: ระยะเริ่มต้น")
+            st.write("ผลการทำนายคือ Stage 1 - ระยะเริ่มต้นของโรค")
+        elif out[0] == 2:
+            st.image("./img/Liver disease02.jpg", caption="Stage 2: ระยะปานกลาง")
+            st.write("ผลการทำนายคือ Stage 2 - เริ่มมีความรุนแรง ต้องเฝ้าระวัง")
+        elif out[0] == 3:
+            st.image("./img/Liver disease03.jpg", caption="Stage 3: ระยะรุนแรง")
+            st.write("ผลการทำนายคือ Stage 3 - โรครุนแรง ควรพบแพทย์ทันที")
+        elif out[0] == 4:
+            st.image("./img/Liver disease04.jpg", caption="Stage 4: ระยะวิกฤต")
+            st.write("ผลการทำนายคือ Stage 4 - ระยะอันตราย ต้องได้รับการรักษาโดยเร็ว")
         else:
-            st.image("./img/Liver disease04.jpg")
+            st.warning("ไม่สามารถจำแนก Stage ได้")
 else:
     st.write("ไม่ทำนาย")
