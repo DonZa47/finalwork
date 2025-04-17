@@ -14,8 +14,8 @@ print(df.head())
 # ---------- STEP 2: เตรียมข้อมูล ----------
 # แก้ 'interest_rate' ให้ตรงกับชื่อคอลัมน์ที่คุณจะทำนาย
 target_column = 'interest_rate'
-X = df.drop(Stage_column, axis=1)
-y = df[Stage_column]
+X = df.drop("Stage", axis=1)
+y = df.Stage
 
 # แปลงข้อมูล category เป็นตัวเลข (One-Hot Encoding)
 X = pd.get_dummies(X)
