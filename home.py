@@ -16,8 +16,7 @@ with c2:
     st.write('./img/Liver disease03.jpg')
 with c3:
     st.write('./img/Liver disease04.jpg')
-import os
-print(os.getcwd())
+
 dt= pd.read_csv('./cirrhosis.csv')
 
 st.header("ข้อมูลโรคตับ")
