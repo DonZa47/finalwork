@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 
 # ---------- STEP 1: โหลดข้อมูล ----------
 df = pd.read_csv('./cirrhosis/cirrhosis.csv')  # แก้ชื่อไฟล์ตรงนี้
-print("ข้อมูลตัวอย่าง:")
+print("./cirrhosis/cirrhosis.csv:")
 print(df.head())
 
 # ---------- STEP 2: เตรียมข้อมูล ----------
