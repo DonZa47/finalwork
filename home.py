@@ -82,7 +82,7 @@ A19 = st.number_input("กรุณาเลือกข้อมูล19")
 if st.button("ทำนายผล"):
     #st.write("ทำนาย")
    dt = pd.read_csv("./data/cirrhosis.csv") 
-   X = dt.drop('Stage', axis=1)
+   X = dt.drop('Stage'&"id", axis=1)
    y = dt.Stage  
 
    Knn_model = KNeighborsClassifier(n_neighbors=3)
