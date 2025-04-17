@@ -11,11 +11,11 @@ st.image('.Liver disease01.jpg')
 
 c1,c2,c3=st.columns(3)
 with c1:
-    st.write('.Liver disease02.jpg')
+    st.write('./Liver disease02/.jpg')
 with c2:
-    st.write('.Liver disease03.jpg')
+    st.write('./Liver disease03/.jpg')
 with c3:
-    st.write("'.Liver disease04.jpg'")
+    st.write("'./Liver disease04/.jpg'")
 
 dt= pd.read_csv('./cirrhosis.csv')
 
