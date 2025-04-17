@@ -4,7 +4,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
-st.title("การพยากรณ์โรคหัวใจล้มเหลว")
+st.title("การพยากรณ์โรคตับต่างๆ")
 st.header("👨🏽‍⚕️👨🏽‍⚕️ด้วยเทคนิคเหมืองแร่ข้อมูล👨🏽‍⚕️👨🏽‍⚕️")
 
 st.image('./img/H1.jpg')
@@ -17,9 +17,9 @@ with c2:
 with c3:
     st.write("")
 
-dt= pd.read_csv('./data/heart2.csv')
+dt= pd.read_csv('./cirrhosis.csv')
 
-st.header("ข้อมูลโรคหัวใจ")
+st.header("ข้อมูลโรคตับ")
 st.write(dt.head(10))
 
 count_male = dt.groupby('Sex').size()[1]
