@@ -70,9 +70,14 @@ A8 = st.number_input("กรุณาเลือกข้อมูล8")
 A9 = st.number_input("กรุณาเลือกข้อมูล9")
 A10 = st.number_input("กรุณาเลือกข้อมูล10")
 A11 = st.number_input("กรุณาเลือกข้อมูล11")
-
-sp_len = st.number_input("กรุณาเลือกข้อมูล sepal.length")
-sp_wd = st.number_input("กรุณาเลือกข้อมูล sepal.width")
+A12 = st.number_input("กรุณาเลือกข้อมูล12")
+A13 = st.number_input("กรุณาเลือกข้อมูล13")
+A14 = st.number_input("กรุณาเลือกข้อมูล14")
+A15 = st.number_input("กรุณาเลือกข้อมูล15")
+A16 = st.number_input("กรุณาเลือกข้อมูล16")
+A17 = st.number_input("กรุณาเลือกข้อมูล17")
+A18 = st.number_input("กรุณาเลือกข้อมูล18")
+A19 = st.number_input("กรุณาเลือกข้อมูล19")
 
 if st.button("ทำนายผล"):
     #st.write("ทำนาย")
@@ -83,7 +88,7 @@ if st.button("ทำนายผล"):
    Knn_model = KNeighborsClassifier(n_neighbors=3)
    Knn_model.fit(X, y)  
     
-   x_input = np.array([[A1,A2,A3,A4,A5,A6,A7,A8,A9,A10,A11]])
+   x_input = np.array([[A1,A2,A3,A4,A5,A6,A7,A8,A9,A10,A11,A12,A13,A14,A15,A16,A17,A18,19]])
    st.write(Knn_model.predict(x_input))
    
    out=Knn_model.predict(x_input)
