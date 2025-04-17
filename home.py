@@ -76,7 +76,7 @@ sp_wd = st.number_input("กรุณาเลือกข้อมูล sepal.
 
 if st.button("ทำนายผล"):
     #st.write("ทำนาย")
-   dt = pd.read_csv("./data/heart2.csv") 
+   dt = pd.read_csv("./data/cirrhosis.csv") 
    X = dt.drop('HeartDisease', axis=1)
    y = dt.HeartDisease   
 
