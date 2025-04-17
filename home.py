@@ -9,7 +9,7 @@ st.header("👨🏽‍⚕️👨🏽‍⚕️ด้วยเทคนิคเ�
 
 st.image('./img/Liver disease01.jpg')
 
-c1,c2,c3=st.columns(3)
+c1, c2, c3 = st.columns(3)
 with c1:
     st.image('./img/Liver disease02.jpg')
 with c2:
@@ -34,7 +34,7 @@ st.write("สถิติจำนวนเพศหญิง=0 เพศชา�
 st.write(dt.groupby('Sex')['Sex'].count())
 count_male = dt.groupby('Sex').size()[0]
 dx = [count_male, count_female]
-dx2 = pd.DataFrame(dx, index=["Male","Female"])
+dx2 = pd.DataFrame(dx, index=["Male", "Female"])
 st.bar_chart(dx2)
 
 st.subheader("ข้อมูลแยกตามเพศ")
@@ -44,7 +44,7 @@ dx = [count_male, count_female]
 dx2 = pd.DataFrame(dx, index=["male", "Female"])
 st.bar_chart(dx2)
 
-st.subheader("ข้อมุลค่าเฉลี่ยอายุแยกตามเพศ")
+st.subheader("ข้อมูลค่าเฉลี่ยอายุแยกตามเพศ")
 average_male_age = dt[dt['Sex'] == 1]['Age'].mean()
 average_female_age = dt[dt['Sex'] == 0]['Age'].mean()
 dxavg = [average_male_age, average_female_age]
@@ -79,32 +79,36 @@ A16 = st.number_input("กรุณาเลือกข้อมูล16")
 A17 = st.number_input("กรุณาเลือกข้อมูล17")
 A18 = st.number_input("กรุณาเลือกข้อมูล18")
 
-
 if st.button("ทำนายผล"):
-    dt = pd.read_csv("./data/cirrhosis.csv") 
+    dt = pd.read_csv("./data/cirrhosis.csv")
+    dt = dt.dropna()  # ลบแถวที่มีค่าว่าง
 
-    # ลบแถวที่มี NaN
-    dt = dt.dropna()
-
-    # แปลงข้อมูล object เป็นตัวเลข
+    # แปลง object เป็นตัวเลข
     for col in dt.columns:
         if dt[col].dtype == 'object':
             dt[col] = pd.factorize(dt[col])[0]
 
-    X = dt.drop('Stage', axis=1)
+    # ลบคอลัมน์ที่ไม่ใช่ feature เช่น 'ID'
+    if 'ID' in dt.columns:
+        X = dt.drop(['Stage', 'ID'], axis=1)
+    else:
+        X = dt.drop('Stage', axis=1)
+
     y = dt['Stage']
 
-    # ตรวจสอบว่าจำนวน column ตรงกับ input หรือไม่
+    # ตรวจสอบจำนวนคุณลักษณะ
+    st.write("คอลัมน์ที่ใช้ในการทำนาย:", X.columns.tolist())
     if X.shape[1] != 18:
         st.error(f"จำนวนคุณลักษณะไม่ตรงกัน: ต้องการ 18 แต่มี {X.shape[1]}")
     else:
         Knn_model = KNeighborsClassifier(n_neighbors=3)
         Knn_model.fit(X, y)
 
-        x_input = np.array([[A1,A2,A3,A4,A5,A6,A7,A8,A9,A10,A11,A12,A13,A14,A15,A16,A17,A18]])
+        x_input = np.array([[A1, A2, A3, A4, A5, A6, A7, A8, A9,
+                             A10, A11, A12, A13, A14, A15, A16, A17, A18]])
         out = Knn_model.predict(x_input)
 
-        st.write("ผลการทำนาย Stage:", out[0])
+        st.success(f"ผลการทำนาย Stage: {out[0]}")
 
         if out[0] == 1:
             st.image("./img/Liver disease02.jpg")
