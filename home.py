@@ -20,7 +20,7 @@ with c3:
 dt= pd.read_csv('./cirrhosis.csv')
 
 st.header("ข้อมูลโรคตับ")
-st.write(dt.head(10))
+st.write(dt.head(5))
 
 count_male = dt.groupby('Sex').size()[1]
 count_female = dt.groupby('Sex').size()[0]
@@ -28,7 +28,7 @@ dx = [count_male, count_female]
 dx2 = pd.DataFrame(dx, index=["Male", "Female"])
 st.bar_chart(dx2)
 
-st.subheader("สถิติข้อมูลโรคหัวใจ")
+st.subheader("สถิติข้อมูลโรคตับ")
 st.write(dt.describe())
 st.write("สถิติจำนวนเพศหญิง=0 เพสชาย=1")
 st.write(dt.groupby('Sex')['Sex'].count())
