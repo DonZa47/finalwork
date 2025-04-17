@@ -17,7 +17,7 @@ with c2:
 with c3:
     st.write('./img/Liver disease04.jpg')
 
-dt= pd.read_csv('./cirrhosis.csv')
+dt= pd.read_csv('./cirrhosis/cirrhosis01.csv')
 
 st.header("ข้อมูลโรคตับ")
 st.write(dt.head(5))
